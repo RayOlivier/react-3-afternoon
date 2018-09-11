@@ -20,6 +20,7 @@ class App extends Component {
     this.updatePost = this.updatePost.bind(this);
     this.deletePost = this.deletePost.bind(this);
     this.createPost = this.createPost.bind(this);
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -51,13 +52,24 @@ class App extends Component {
     });
   }
 
+  search(input) {
+    axios.get(`${BASE_URL}/posts/filter?text=${input}`).then(res => {
+      console.log("search res:  ", res);
+      let newArr = res.data.filter((e, i, a) => {
+        return e.text.includes(input);
+      });
+      console.log(newArr);
+      this.setState({ posts: newArr });
+    });
+  }
+
   render() {
     const { posts } = this.state;
     //console.log("POSTS: ", posts);
 
     return (
       <div className="App__parent">
-        <Header />
+        <Header searchFn={this.search} />
 
         <section className="App__content">
           <Compose createPostFn={this.createPost} />
