@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
     axios.get(BASE_URL + "/posts").then(res => {
-      //console.log("res: ", res);
+      console.log("res: ", res.data);
       this.setState({ posts: res.data });
       //console.log(this.state);
     });
@@ -32,24 +32,35 @@ class App extends Component {
 
   updatePost(id, text) {
     axios.put(`${BASE_URL}/posts?id=${id}`, { text }).then(res => {
-      console.log("res: ", res);
+      //console.log("res: ", res);
       this.setState({ posts: res.data });
     });
   }
 
-  deletePost() {}
+  deletePost(id) {
+    axios.delete(`${BASE_URL}/posts?id=${id}`).then(res => {
+      //console.log("res: ", res);
+      this.setState({ posts: res.data });
+    });
+  }
 
-  createPost() {}
+  createPost(text) {
+    axios.post(`${BASE_URL}/posts`, { text }).then(res => {
+      //console.log("res: ", res);
+      this.setState({ posts: res.data });
+    });
+  }
 
   render() {
     const { posts } = this.state;
+    //console.log("POSTS: ", posts);
 
     return (
       <div className="App__parent">
         <Header />
 
         <section className="App__content">
-          <Compose />
+          <Compose createPostFn={this.createPost} />
           {posts.map(e => {
             return (
               <Post
@@ -58,6 +69,7 @@ class App extends Component {
                 date={e.date}
                 id={e.id}
                 updatePostFn={this.updatePost}
+                deletePostFn={this.deletePost}
               />
             );
           })}

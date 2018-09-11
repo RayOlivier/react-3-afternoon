@@ -54,8 +54,9 @@ export default class Post extends Component {
     // const editing = this.state.editing
     // const showMasterMenu = this.state.showMasterMenu
     const { editing, showMasterMenu } = this.state;
+    //const { deletePostFn, id } = this.props;
 
-    console.log(this.props);
+    //console.log(this.props);
 
     return (
       // Main body of post
@@ -70,7 +71,9 @@ export default class Post extends Component {
             style={{ display: showMasterMenu ? "flex" : "none" }}
           >
             <span onClick={this.showEdit}>Edit</span>
-            <span>Delete</span>
+            <span onClick={() => this.props.deletePostFn(this.props.id)}>
+              Delete
+            </span>
           </div>
         </div>
 
