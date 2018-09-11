@@ -24,13 +24,18 @@ class App extends Component {
 
   componentDidMount() {
     axios.get(BASE_URL + "/posts").then(res => {
-      console.log("res: ", res);
+      //console.log("res: ", res);
       this.setState({ posts: res.data });
-      console.log(this.state);
+      //console.log(this.state);
     });
   }
 
-  updatePost() {}
+  updatePost(id, text) {
+    axios.put(`${BASE_URL}/posts?id=${id}`, { text }).then(res => {
+      console.log("res: ", res);
+      this.setState({ posts: res.data });
+    });
+  }
 
   deletePost() {}
 
@@ -46,7 +51,15 @@ class App extends Component {
         <section className="App__content">
           <Compose />
           {posts.map(e => {
-            return <Post key={e.id} />;
+            return (
+              <Post
+                key={e.id}
+                text={e.text}
+                date={e.date}
+                id={e.id}
+                updatePostFn={this.updatePost}
+              />
+            );
           })}
         </section>
       </div>
